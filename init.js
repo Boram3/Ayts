@@ -19,7 +19,7 @@ class YtdCmtViewModelName {
 
 	/** @returns {boolean} */
 	verify() {
-		return (this._dom.id == YtdCmtViewModelName.id()) && (this._name != "");
+		return (this._dom.id == YtdCmtViewModelName.id) && (this._name != "");
 	}
 
 	static get id() {return "header-author";}
@@ -42,7 +42,7 @@ class YtdCmtViewModelCmt {
 
 	static get id() {return "content";}
 	verify() {
-		return (this._dom.id == YtdCmtViewModelCmt.id());
+		return (this._dom.id == YtdCmtViewModelCmt.id);
 	}
 };
 
@@ -66,7 +66,7 @@ class YtdCmtViewModelPic {
 	static get id() {return "author-thumbnail-button";}
 
 	verify() {
-		return (this._dom.id == YtdCmtViewModelPic.id()) && ((this._pic) != "");
+		return (this._dom.id == YtdCmtViewModelPic.id) && ((this._pic) != "");
 	}
 };
 
@@ -87,30 +87,30 @@ class YtdCmtViewModel {
 
 	/** @returns {boolean} @description verifies if this would work as intended */
 	verify() {
-		return this._dom.tagName == YtdCmtViewModel.tag();
+		return this._dom.tagName == YtdCmtViewModel.tag;
 	}
 
 	/** @returns {YtdCmtViewModelName} */
 	name() {
-		return new YtdCmtViewModelName(this._dom.querySelector(```div#${YtdCmtViewModelName.id()}```));
+		return new YtdCmtViewModelName(this._dom.querySelector(`div#${YtdCmtViewModelName.id}`));
 	}
 
 	/** @returns {YtdCmtViewModelCmt} */
 	cmt() {
-		return new YtdCmtViewModelCmt(this._dom.querySelector(```div#${YtdCmtViewModelCmt.id()}```));
+		return new YtdCmtViewModelCmt(this._dom.querySelector(`div#${YtdCmtViewModelCmt.id}`));
 	}
 
 	/** @returns {YtdCmtViewModelPic} */
 	pic() {
-		return new YtdCmtViewModelPic(this._dom.querySelector(```div#${YtdCmtViewModelPic.id()}```));
+		return new YtdCmtViewModelPic(this._dom.querySelector(`button#${YtdCmtViewModelPic.id}`));
 	}
 
 	dump(pre = "") {
-		console.log(pre + "[YtdCmtViewModel] dump start");
-		console.log(pre + "[YtdCmtViewModel::name()::_name] " + this.name()._name);
-		console.log(pre + "[YtdCmtViewModel::cmt()::_cmt] \n" + this.cmt()._cmt);
-		console.log(pre + "[YtdCmtViewModel::pic()::_pic] \n" + this.pic()._pic);
-		console.log(pre + "[YtdCmtViewModel] dump end");
+		return (pre + "[YtdCmtViewModel] dump start") + "\n"
+			+ (pre + "[YtdCmtViewModel::name()::_name] " + this.name()._name) + "\n"
+			+ (pre + "[YtdCmtViewModel::cmt()::_cmt] \n" + this.cmt()._cmt) + "\n"
+			+ (pre + "[YtdCmtViewModel::pic()::_pic] \n" + this.pic()._pic) + "\n"
+			+ (pre + "[YtdCmtViewModel] dump end") + "\n";
 	}
 };
 
@@ -133,7 +133,7 @@ class YtdCmtTdRendr {
 	 * @returns {boolean} 
 	 * */
 	verify() {
-		return this._dom.tagName == YtdCmtTdRendr.tag();
+		return this._dom.tagName == YtdCmtTdRendr.tag;
 	}
 
 	/**
@@ -141,7 +141,7 @@ class YtdCmtTdRendr {
 	 * @description comment of mine 
 	 * */
 	mine() {
-		return new YtdCmtViewModel(this._dom.querySelector(YtdCmtViewModel.tag()));
+		return new YtdCmtViewModel(this._dom.querySelector(YtdCmtViewModel.tag));
 	}
 
 	/** 
@@ -151,14 +151,14 @@ class YtdCmtTdRendr {
 	children() {
 		const __DOMS = this._dom.querySelectorAll(
 			"div#replies ytd-comment-replies-renderer "
-			"div#expander div#expander-contents "
-			"div#contents expander-contents"
+			+ "div#expander div#expander-contents "
+			+ "div#contents ytd-comment-view-model"
 		);
 
 		let _rtn = [];
 
 		for (const DOM of __DOMS) {
-			_rtn.append(new YtdCmtViewModel(DOM));
+			_rtn.push(new YtdCmtViewModel(DOM));
 		}
 
 		return _rtn;
@@ -167,37 +167,43 @@ class YtdCmtTdRendr {
 	/** 
 	 * @description Prints all out */
 	dump(pre = "") {
-		console.log(pre + "[YtdCmtTdRendr] Dump start");
-		console.log(pre + "[YtdCmtTdRendr::mine]");
-		this.mine().dump(pre + "  ");
+		let _str = ""
+
+		_str += (pre + "[YtdCmtTdRendr] Dump start") + "\n";
+		_str += (pre + "[YtdCmtTdRendr::mine]") + "\n";
+		_str += this.mine().dump(pre + "  ") + "\n";
 
 
+		_str += (pre + "[YtdCmtTdRendr::children start]") + "\n";
 		for (const CHILD of this.children()) {
-			console.log(pre + "[YtdCmtTdRendr::mine]");
-			CHILD.dump(pre + "  ");
+			_str += (pre + "[YtdCmtTdRendr::children section start]") + "\n";
+			_str += CHILD.dump(pre + "  ") + "\n";
+			_str += (pre + "[YtdCmtTdRendr::children section end]") + "\n";
 		}
+		_str += (pre + "[YtdCmtTdRendr::children end]") + "\n";
 
-		console.log(pre + "[YtdCmtTdRendr] Dump end");
+		_str += (pre + "[YtdCmtTdRendr] Dump end") + "\n";
+
+		return _str;
 	}
 };
 
 
-setinterval(
+setInterval(
 	() => {
-		const CommentsRaw = document.querySelectorAll(
-			YtdCmtTdRendr.tag()
-		) ?? [];
+		const CommentsRaw = document
+			.querySelectorAll("div#contents " + YtdCmtTdRendr.tag);
 
 		/** @type {YtdCmtTdRendr[]} */
 		let Comments = []
 
 		for (const CommentRaw of CommentsRaw) {
-			Comments.append(new YtdCmtTdRendr(CommentRaw));
+			Comments.push(new YtdCmtTdRendr(CommentRaw));
 		}
 
 		for (const Comment of Comments) {
-			Comment.dump();
+			console.log(Comment.dump());
 		} /* Test::printing existing comments all out */
 	}
-	, 5000
+	, 500
 );
