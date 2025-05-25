@@ -188,6 +188,19 @@ class YtdCmtTdRendr {
 	}
 };
 
+let _WasmModule = null;
+let _WasmMem = null;
+
+window.onload = async () => {
+	if (false) _WasmModule = await (async function () {
+		const res = await fetch("./Ayts.wasm");
+		const buff = await res.arrayBuffer();
+		const module = await WebAssembly.instantiate(buff);
+
+		return module.instance.exports;
+	})();
+	if (false) _WasmMem = await _WasmModule.memory();
+}
 
 setInterval(
 	() => {
@@ -201,7 +214,8 @@ setInterval(
 			Comments.push(new YtdCmtTdRendr(CommentRaw));
 		}
 
-		for (const Comment of Comments) {
+
+		if (false) for (const Comment of Comments) {
 			console.log(Comment.dump());
 		} /* Test::printing existing comments all out */
 	}
