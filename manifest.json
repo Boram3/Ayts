@@ -1,18 +1,23 @@
 {
-    "manifest_version": 3,
+    "manifest_version": 2,
     "name": "Anti-Youtude Scam Bots: (AYTS)",
     "description": "This is a tool that allows you to detect, remove, or group YouTube scambots at the user level that may cause harm by providing harmful (e.g., sexual) information on YouTube, a type of social scam bot that mimics the behavior of regular users to post comments and interact with other users, often appearing as top comments.",
     "version": "0.1",
-    "action": {
-        "default_icon": "icon.png"
-    },
 
   "content_scripts": [
     {
-      "js": ["init.js"],
+      "js": [
+	      "YtdCmt.js",
+	      "main.js"
+      ],
       "matches": [
         "https://*.youtube.com/*"
       ]
     }
-  ]
+  ],
+
+    "web_accessible_resources" : [ 
+      "libAyts/Module/Ayts.wasm", 
+      "libAyts/Module/Ayts.js" 
+    ]
 }
